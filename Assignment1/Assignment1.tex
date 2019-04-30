@@ -1,0 +1,123 @@
+% !TEX program = xelatex
+\documentclass[11pt, letterpaper]{exam}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
+
+\renewcommand{\thepartno}{\roman{partno}}
+\renewcommand{\thesubpart}{(\roman{subpart})}
+\renewcommand{\subpartlabel}{\thesubpart} % removes dot
+\qformat{Exercise \thequestion: \hfill}
+
+\newcommand{\tab}{\hspace{.5cm}}
+\newcommand{\includeimage}{\noindent\includegraphics[width=\linewidth]}
+
+\title{Artificial Intelligence \\ Assignment 1 \\ Tutorial 3}
+\author{Sudharshini Thangamurugan, 2577870 \\ Jeffrey Solomon, 2577386 \\ Ilya Senatorov, 2576798}
+\date{\today}
+
+\begin{document}
+
+  \maketitle
+
+  \begin{questions}
+
+  \question
+
+    \begin{parts}
+
+      \part A Performance Measure is a third-party measure to decide if the agent has performed well.
+      It evaluates the state of the environment. A utility function, on the other hand, is how an agent evaluates the
+      state of the environment itself, and can be used to decide actions. Although it won't stop moving even after
+      everything is complete, doing nothing is not an action this agent can take. If it had a 'do nothing' action, then
+      it would be irrational for not using it.
+      \
+
+      \part A learning agent receives performance measure feedback, and adjusts it's actions/performance accordingly.
+      The utility function changes based on the performance measure.
+
+    \end{parts}
+
+  \vspace{1em}
+
+  \question
+
+    \begin{parts}
+
+      \part Our size of P is 4, the possible percept sets are: \\
+        \tab [A, Clean] , [A, Dirty], [B, Clean], [B, Dirty]
+
+      \part \
+
+        \begin{subparts}
+            \subpart After three time steps, we will have percieved 3 sets of percepts (6 percepts in total).
+            In the next time period we will again have 4 sets of precepts: \\ $[A, clean], [B, clean], [A, dirty], [B, dirty]$
+            \\
+
+            \subpart After 3 time steps, we can have $4^{3} = 64$ possible sequences of these pairings
+        \end{subparts}
+
+      \part Storing all possible precepts means at each timepoint we store $[Position, Cleanliness]$.
+        As we have seen, this pairing can take four values. \\
+        If we store the all the possible sequences at each possible time point t, then at each timepoint we have $4^{t}$ entries.
+        Summing across all time points, we get the following equation:
+        \begin{equation*}
+            \begin{gathered}
+                4^T
+            \end{gathered}
+        \end{equation*}
+
+    \end{parts}
+
+  \vspace{1em}
+
+  \question
+    This is a rational agent, because it takes the best possible action based on the performance measure.
+    It cleans the square if it is dirty, and moves to the other square if the current square is not dirty.
+    It can not obtain a more optimal solution with the information it has.
+
+  \vspace{1em}
+
+  \question
+
+    \begin{parts}
+
+      \part A, C, G, H, F, I
+      \part B, D, E
+      \part A, C, H
+      \part B, E, F, H, I
+    \end{parts}
+
+  \vspace{1em}
+
+  \question
+
+    \begin{parts}
+      \part \
+
+      \includeimage{figure_5a}
+
+      The solution path Uniform Cost Search takes is A C H I, totalling a cost of 8.
+      Uniform-cost Search is guaranteed to find the optimal solution. It searches all possible paths that have a cost
+      less than the lowest-cost discovered goal state. By searching all lower-costing paths, it will either find a
+      cheaper goal state, or discover that the selected goal state is the cheapest path available.
+
+      \pagebreak
+
+      \part \
+
+      \includeimage{figure_5b}
+
+      The solution path Iterative Deepening Search takes is A C G I, totalling a cost of 10. We know that this is not
+      guaranteed to be optimal, because we have already seen a more optimal solution using Uniform Cost Search.
+      Iterative Deepening Search does not take into account the cost when making it's decisions, but rather searches the
+      possible paths until it finds any solution.
+
+    \end{parts}
+
+    \end{questions}
+
+\end{document}
