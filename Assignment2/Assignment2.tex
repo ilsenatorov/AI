@@ -29,8 +29,27 @@
   \begin{questions}
     \setcounter{question}{5}
     \question
-        % Hill climbing, 3.5 points
+      \begin{parts}
+        \part \
 
+        \includeimage{figure6_a}
+
+        Solution path = A C H I \\
+        This solution is optimal because $h$ is consistent.
+        \pagebreak
+
+        \part \
+
+        \includeimage{figure6_b}
+
+        This algorithm found the solution at node I, via the path A C G I.
+        This solution is not optimal.
+
+        \part
+        Yes, the hill-climbing algorithm can stop in a local minimum without finding a solution.
+        If we use the cost as our heuristic, it will follow all the minimum cost nodes first. This
+        will cause it to step into and get stuck in D, before we have tried any of the paths along C.
+      \end{parts}
     \vspace{1em}
 
     \question
