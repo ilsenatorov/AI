@@ -50,11 +50,42 @@
         If we use the cost as our heuristic, it will follow all the minimum cost nodes first. This
         will cause it to step into and get stuck in D, before we have tried any of the paths along C.
       \end{parts}
+
     \vspace{1em}
 
-    \question
+    \question For the following problems, we will reference positions as in the image (below).
+      We will only consider going up as our first move, due to the fact that the room is symmetric across the diagonal,
+      thus going right will have the same effect as going up.
 
-    % Admissable Heuristics, 2.5 points
+    \begin{center}
+      \includegraphics[width=5cm]{grid}
+    \end{center}
+
+
+    \begin{parts}
+      \part $h_{1} =$ Number of dirty spots \\
+        This is an admissible heuristic because in each position the cost to reach the goal is not higher than the
+        lowest possible cost. It never visits the center point because it aims to decrease the number of dirty spots with each move,
+        so the center spot will never be the optimal solution.
+
+      \part $h_{2} =$ Number of clean spots \\
+        This is not an admissible heuristic because from B1 it will suggest moving into B2, because going up and right
+        will be considered optimal by the algorithm.
+
+      \part $h_{3} =$ Sum of the distances from the robot to all the dirty spots \\
+        This is not an admissible heuristic because moving to the center space as soon as possible will reduce the sum
+        of the distances, but again, is not the optimal solution.
+
+      \part $h_{4} = h_{2} + h_{1}$ \\
+      This is not an admissible heuristic because the heuristic value will never change,
+      and always remain the total number of squares.
+
+      \part $h_{5} =$ Minimum distance from the robot to any dirty spot \\
+        This is not an admissible heuristic because the robot could move back and forth from the middle to a side space,
+        and still be the minimum distance from a dirty spot without actually ever cleaning more.
+    \end{parts}
+
+    \vspace{1em}
 
     \question
 
