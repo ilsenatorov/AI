@@ -1,0 +1,59 @@
+% !TEX program = xelatex
+\documentclass[11pt, letterpaper]{exam}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
+
+\renewcommand{\thepartno}{\roman{partno}}
+\renewcommand{\thesubpart}{(\roman{subpart})}
+\renewcommand{\subpartlabel}{\thesubpart} % removes dot
+\qformat{Exercise \thequestion: \hfill}
+
+\newcommand{\tab}{\hspace{.5cm}}
+\newcommand{\includeimage}{\noindent\includegraphics[width=\linewidth]}
+
+
+\title{Artificial Intelligence \\ Practical 1 \\ Tutorial 4}
+\author{Sudharshini Thangamurugan, 2577870 \\ Jeffrey Solomon, 2577386 \\ Ilya Senatorov, 2576798}
+\date{May 14, 2019}
+
+% \includeimage{FIGURE}
+
+\begin{document}
+
+  \maketitle
+
+  \begin{questions}
+
+    \question
+    \begin{parts}
+      \setcounter{partno}{2}
+      \part The BFS algorithm found the goal first.
+      \setcounter{partno}{4}
+      \part
+      In this example, expanding nodes nodes right first will reduce the number of expanstions.
+      This will reach the goal after expanding 10 nodes.
+
+    \end{parts}
+    \vspace{1em}
+    \question
+
+      \begin{parts}
+        \part
+        \begin{align*}
+          & ((a \lor b) \land \neg b) \to c \\
+          \text{(step 2) \tab} & \equiv \lnot((a \lor b) \land \neg b) \lor c \\
+          \text{(step 3) \tab} & \equiv ((\neg a \lor \neg b) \land (\neg b \lor \neg b)) \lor c \\
+          \text{(step 4) \tab} & \equiv (((a \lor \neg b) \lor c) \land ((b \lor \neg b)) \lor c)
+        \end{align*}
+
+      \end{parts}
+
+    \vspace{1em}
+
+  \end{questions}
+
+\end{document}
