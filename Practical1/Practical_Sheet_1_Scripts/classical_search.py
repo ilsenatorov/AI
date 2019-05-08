@@ -1,4 +1,4 @@
-from array import *
+
 import time
 import os
 import queue
@@ -29,7 +29,7 @@ initial_map = [
 
 
 def print_map():
-	os.system('cls' if os.name == 'nt' else 'clear')  
+	os.system('cls' if os.name == 'nt' else 'clear')
 	for row in  current_map:
 		s1 = ''
 		for item in row:
@@ -52,8 +52,8 @@ def valid_cell(row,col):
 	return row>=0 and row<len( current_map) and col>=0 and col<len( current_map[0]) and current_map[row][col] is not WALL_SYMBOL and current_map[row][col] is not VISITED_CELL_SYMBOL
 
 def generate_adjacent_cells(agent_row,agent_col):
-	# agent_row is the row where currently the agent is 
-	# agent_col is the column where currently the agent is 
+	# agent_row is the row where currently the agent is
+	# agent_col is the column where currently the agent is
 
 	# Calculate the position of adjacent cells around the agent for later exploration by DFS or BFS.
 	left_of_agent_row = agent_row
@@ -66,11 +66,11 @@ def generate_adjacent_cells(agent_row,agent_col):
 	right_of_agent_col = agent_col + 1
 
 	top_of_agent_row = agent_row + 1
-	top_of_agent_col = agent_col 
+	top_of_agent_col = agent_col
 	# ...
 	# ...
 
-	# diagonal move support 
+	# diagonal move support
 	diag_col = [agent_col + 1, agent_col + 1, agent_col - 1, agent_col - 1]
 	diag_row = [agent_row + 1, agent_row - 1, agent_row + 1, agent_row - 1]
 
