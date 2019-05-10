@@ -1,0 +1,99 @@
+% !TEX program = xelatex
+\documentclass[11pt, letterpaper]{exam}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
+
+\renewcommand{\thesubpart}{(\roman{subpart})}
+\renewcommand{\subpartlabel}{\thesubpart} % removes dot
+\qformat{Exercise \thequestion: \hfill}
+
+\newcommand{\tab}{\hspace*{.5cm}}
+\newcommand{\includeimage}{\noindent\includegraphics[width=\linewidth]}
+
+
+\title{Artificial Intelligence \\ Assignment  \\ Tutorial 4}
+\author{Sudharshini Thangamurugan, 2577870 \\ Jeffrey Solomon, 2577386 \\ Ilya Senatorov, 2576798}
+\date{May 14, 2019}
+
+\begin{document}
+
+  \maketitle
+
+  \begin{questions}
+  \setcounter{question}{8}
+  \question
+
+    \begin{parts}
+    \part
+    \begin{align*}
+      &(P \lor (Q \iff R)) \land \neg (Q \to R) \\
+      step 1 \tab &\equiv (P \lor ((Q \to R) \land (R \to Q))) \land \neg (Q \to R) \\
+      step 2 \tab &\equiv (P \lor ((\neg Q \lor R) \land (\neg R \lor Q))) \land \neg (\neg Q \lor R) \\
+      step 3 \tab & \equiv (P \lor ((\neg Q \lor R) \land (\neg R \lor Q))) \land (Q \land \neg R) \\
+      simplify  & \equiv (P \land Q \land \neg R) \\
+    \end{align*}
+
+    \part TODO
+    \end{parts}
+
+  \vspace{1em}
+
+  \question
+  \begin{parts}
+    \part
+    $ \Delta = \{\{\neg Q, R\},\{P,\neg R\},\{P,Q\},\{Q,R\},\{\neg P,\neg Q, R\},\{\neg R\}\} $
+    \part
+    $ \Delta = \{\{P,R\},\{\neg R, Q\},\{\neg Q, P\},\{Q,\neg P\},\{\neg Q, \neg P\}\} $
+    \part
+    $ \Delta = \{\{\neg P,R,S\},\{\neg R,\neg Q\},\{P,S,\neg Q\},\{\neg S,\neg Q\},\{\neg P,Q\},\{P,Q\}\} $
+  \end{parts}
+
+  \vspace{1em}
+
+  \question
+  \begin{parts}
+    \part
+      \begin{align*}
+        & \Delta = \{\{\neg A,B,C\},\{\neg B,\neg C\},\{\neg A,\neg C,\neg D\},\{C,\neg D\},\{A,D\},\{A,\neg C,\neg D\}\} \\
+        & \\
+        & A \mapsto 0 \\
+        &   \tab \{\{\neg B,\neg C\},\{C,\neg D\},\{D\},\{\neg C,\neg D\}\} \\
+        &   \tab UP: D \mapsto 1 \\
+        &     \tab\tab \{\{\neg B,\neg C\},\{C\}\{\neg C\}\} \equiv \square \\
+        & A \mapsto 1 \\
+        &   \tab \{\{B,C\},\{\neg B,\neg C\},\{\neg C,\neg D\},\{C,\neg D\}\} \\
+        &   \tab B \mapsto 0 \\
+        &     \tab\tab \{\{C\},\{\neg C,\neg D\},\{C,\neg D\}\} \\
+        &     \tab\tab UP: C \mapsto 1 \\
+        &       \tab\tab\tab \{\{C\},\{\neg D\},\{\neg D\}\} \\
+        & Satisfiable: A = 1, B = 0, C = 1, D = 0
+      \end{align*}
+    \part
+      \begin{align*}
+        & \Delta = \{\{\neg  A,\neg B,C,\neg E\},\{\neg A,\neg B,C,E\},\{\neg A, B\},\{\neg B,A\},\{B,D\},\{B,C,\neg D\},\{\neg C\}\} \\
+        & \\
+        & UP: C \mapsto 0 \\
+        & \{\{\neg  A,\neg B,\neg E\},\{\neg A,\neg B,E\},\{\neg A, B\},\{\neg B,A\},\{B,D\},\{B,\neg D\}\} \\
+        & A \mapsto 0 \\
+        & \{\{\neg B\},\{B,D\},\{B,\neg D\}\} \\
+        &   \tab UP: B \mapsto 0 \\
+        &   \tab\tab \{\{D\},\{\neg D\}\} \equiv \square \\
+        & A \mapsto 1 \\
+        & \{\{\neg B,\neg E\},\{\neg B,E\},\{B\},\{B,D\},\{B,\neg D\}\} \\
+        &   \tab UP: B \mapsto 1 \\
+        &   \tab\tab \{\{\neg B,\neg E\},\{\neg B,E\},\{B\},\{B,D\},\{B,\neg D\}\} \\
+        &   \tab\tab \{\{\neg E\},\{E\}\} \equiv \square
+      \end{align*}
+      Not satisfiable since no combination of A and B will satisfy
+
+  \end{parts}
+
+  \question
+
+  \end{questions}
+
+\end{document}
