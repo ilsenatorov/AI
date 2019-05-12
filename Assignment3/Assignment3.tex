@@ -37,7 +37,15 @@
       simplify  & \equiv (P \land Q \land \neg R) \\
     \end{align*}
 
-    \part TODO
+    \part 
+    \begin{align*}
+      &\neg(P \iff Q) \to (Q \iff R) \\
+      step 1 \tab &\equiv \neg((P \to Q) \land ( Q \to P)) \to ((Q \to R) \land (R \to Q)) \\
+      step 2 \tab &\equiv \neg((\neg P \lor Q) \land (P \lor \neg Q)) \to ((\neg Q \lor R) \land (Q \lor \neg R)) \\
+      step 2 \tab &\equiv ((\neg P \lor Q) \land (P \lor \neg Q)) \lor ((\neg Q \lor R) \land (Q \lor \neg R)) \\
+      step 4 \tab &\equiv ((\neg P \lor Q \lor \neg Q \lor R) \land (\neg P \lor Q \lor Q \lor \neg R) \land (P \lor Q \lor \neg Q \lor R) \land (P \lor \neg Q \lor Q \lor \neg R)) \\
+      simplify & \equiv (\neg P \lor Q \lor \neg R) \land (P \lor \neg Q \lor R) 
+    \end{align*}
     \end{parts}
 
   \vspace{1em}
