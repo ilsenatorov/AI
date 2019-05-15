@@ -37,19 +37,19 @@
       simplify  & \equiv (P \land Q \land \neg R) \\
     \end{align*}
 
-    \part 
+    \part
     \begin{align*}
       &\neg(P \iff Q) \to (Q \iff R) \\
       step 1 \tab &\equiv \neg((P \to Q) \land ( Q \to P)) \to ((Q \to R) \land (R \to Q)) \\
       step 2 \tab &\equiv \neg((\neg P \lor Q) \land (P \lor \neg Q)) \to ((\neg Q \lor R) \land (Q \lor \neg R)) \\
       step 2 \tab &\equiv ((\neg P \lor Q) \land (P \lor \neg Q)) \lor ((\neg Q \lor R) \land (Q \lor \neg R)) \\
       step 4 \tab &\equiv ((\neg P \lor Q \lor \neg Q \lor R) \land (\neg P \lor Q \lor Q \lor \neg R) \land (P \lor Q \lor \neg Q \lor R) \land (P \lor \neg Q \lor Q \lor \neg R)) \\
-      simplify & \equiv (\neg P \lor Q \lor \neg R) \land (P \lor \neg Q \lor R) 
+      simplify & \equiv (\neg P \lor Q \lor \neg R) \land (P \lor \neg Q \lor R)
     \end{align*}
     \end{parts}
 
   \vspace{1em}
-
+  \newpage
   \question
   \begin{parts}
     \part
@@ -60,6 +60,7 @@
     $ \Delta = \{\{P,R\},\{\neg R, Q\},\{\neg Q, P\},\{Q,\neg P\},\{\neg Q, \neg P\}\} $ \\
     \includeimage{10b}
 
+    \pagebreak
     \part
     $ \Delta = \{\{\neg P,R,S\},\{\neg R,\neg Q\},\{P,S,\neg Q\},\{\neg S,\neg Q\},\{\neg P,Q\},\{P,Q\}\} $ \\
     \includeimage{10c}
@@ -107,7 +108,45 @@
   \end{parts}
 
   \question
+    \begin{align*}
+      & \Delta = \{\{A,B,C,D\},\{\neg A,\neg B\},\{\neg B, C\},\{\neg A,\neg D\},\{A,\neg D\},\{C,\neg D\},\{B, \neg C\},\{\neg B, C\},\{\neg A, C, D\}\} \\
+      & A \mapsto 0 \\
+      & \{\{B,C,D\},\{\neg B, C\},\{\neg D\},\{C,\neg D\},\{B, \neg C\},\{\neg B, C\}\} \\
+      &   \tab UP: D \mapsto 0 \\
+      &   \tab \{\{B,C\},\{\neg B, C\},\{B, \neg C\},\{\neg B, C\}\} \\
+      &     \tab\tab B \mapsto 1 \\
+      &     \tab\tab \{\{C\}\{\neg C\}\} \equiv \square
+    \end{align*}
 
+    \noindent\includegraphics[width=4cm]{12a}
+
+    Continuing where we left off with $A \mapsto 0, D \mapsto 1$ and adding the learned clause $\{A, \neg B\}$ \
+
+    \begin{align*}
+      & \{\{A, \neg B\},\{A,B,C,D\},\{\neg A,\neg B\},\{\neg B, C\},\{\neg A,\neg D\},\{A,\neg D\},\{C,\neg D\},\{B, \neg C\},\{\neg B, C\},\{\neg A, C, D\}\} \\
+      & A \mapsto 0, D \mapsto 0 \\
+      & \{\{A, \neg B\},\{B,C\},\{\neg B, C\},\{B, \neg C\},\{\neg B, C\}\} \\
+      & \equiv \{\{\neg B\},\{B,C\},\{\neg B, C\},\{B, \neg C\},\{\neg B, C\}\} \\
+      &   \tab\tab UP: B \mapsto 0 \\
+      &   \tab\tab \{\{C\},\{\neg C\}\}
+    \end{align*}
+
+    \noindent\includegraphics[width=4cm]{12b}
+
+    Now, starting with the newly learned clause $\{A\}$ \\
+    \begin{align*}
+      & \{\{A\},\{A, \neg B\},\{A,B,C,D\},\{\neg A,\neg B\},\{\neg B, C\},\{\neg A,\neg D\},\{A,\neg D\},\{C,\neg D\},\{B, \neg C\},\{\neg B, C\},\{\neg A, C, D\}\} \\
+      & UP: A \mapsto 1 \\
+      & \{\{\neg B\},\{\neg B, C\},\{\neg D\},\{C,\neg D\},\{B, \neg C\},\{\neg B, C\},\{C, D\}\} \\
+      &   \tab UP: B \mapsto 0 \\
+      &   \tab \{\{\neg D\},\{C,\neg D\},\{\neg C\},\{C, D\}\} \\
+      &     \tab\tab UP: C \mapsto 0 \\
+      &     \tab\tab \{\{\neg D\},\{D\}\} \\
+    \end{align*}
+
+    \noindent\includegraphics[width=8cm]{12c}
+
+    This shows that this set of clauses is unsatisfiable.
   \end{questions}
 
 \end{document}
