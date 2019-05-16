@@ -47,7 +47,32 @@
           \subpart Every boy who owns a red car has a cool grandfather or is rich.
         \end{subparts}
 
+    \end{parts}
 
+    \question
+
+    \begin{parts}
+      \part
+      \[\varphi_1 = \exists x [A(x) \to \forall x \forall y [B(x) \land C(x,y)]]\]
+      \[\varphi_1 = \exists x [\neg A(x) \lor \forall x \forall y [B(x) \land C(x,y)]]\]
+      \[\varphi_1 = \exists x \forall a \forall b [\neg A(x) \lor [B(a) \land C(a,b)]]\]
+      \[\varphi_1 = \forall a \forall b [\neg A(f) \lor [B(a) \land C(a,b)]]\]
+      \[\varphi_1 = \forall a \forall b [(\neg A(f) \lor B(a) \land (\neg A(f) \lor C(a,b))] \]
+      \[\varphi_1 =\{\{\neg A(f) , B(a) \}, \{ \neg A(f), C(a,b)\}\} \]
+      \[\varphi_1 =\{\{\neg A(f) , B(a) \}, \{ \neg A(g), C(c,d)\}\} \]
+
+      \part
+      \[\varphi_2 = \forall x \exists y [[A(x,y) \land B(y)] \to \forall z (C(y,z) \lor D(x)) ] \] 
+      \[\varphi_2 = \forall x \exists y [ \neg [A(x,y) \land B(y)] \lor \forall z (C(y,z) \lor D(x))]  \]
+      \[\varphi_2 = \forall x \exists y [[ \neg A(x,y) \lor \neg B(y)] \lor \forall z (C(y,z) \lor D(x))]  \]
+      \[\varphi_2 = \forall x \exists y \forall z [ \neg A(x,y) \lor \neg B(y) \lor  C(y,z) \lor D(x)]  \]
+      \[\varphi_2 = \forall x \forall z [ \neg A(x,f(x)) \lor \neg B(f(x)) \lor  C(f(x),z) \lor D(x)]  \]
+      \[\varphi_2 = \{\{ \neg A(x,f(x)) , \neg B(f(x)) ,  C(f(x),z) , D(x) \}\} \]
+      \part
+      \[\varphi_3 = \forall x \forall y \neg \forall z [A(x,y) \implies (B(y) \land D(y,z)] \]
+      \[\varphi_3 = \forall x \forall y \neg \forall z [(A(x,y) \to (B(y) \land D(y,z)) \land ((B(y) \land D(y,z)) \to A(x,y))] \]
+      \[\varphi_3 = \forall x \forall y \neg \forall z [(A(x,y) \lor \neg (B(y) \land D(y,z)) \land (\neg A(x,y) \lor (B(y) \land D(y,z))] \]
+      \[\varphi_3 = \forall x \forall y \forall z [(A(x,y) \lor \neg (B(y) \land \neg D(y,z)) \land (\neg A(x,y) \lor (B(y) \land \neg D(y,z))] \]
     \end{parts}
 
     \vspace{1em}
