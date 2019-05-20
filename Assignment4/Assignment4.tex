@@ -29,6 +29,7 @@
     \setcounter{question}{13}
     \question
 
+    \vspace{1em}
     \question
 
     \begin{parts}
@@ -49,6 +50,7 @@
 
     \end{parts}
 
+    \vspace{1em}
     \question
 
     \begin{parts}
@@ -86,12 +88,29 @@
         \varphi_3 & = \forall x \forall y \exists z [(\neg A(x,y) \lor \neg B(y) \lor \neg D(y,z)) \land (A(x,y) \lor B(y)) \land (A(x,y) \lor D(y,z))] \\
         \varphi_3 & = \forall x \forall y  [(\neg A(x,y) \lor \neg B(y) \lor \neg D(y,f(x,y))) \land (A(x,y) \lor B(y)) \land (A(x,y) \lor D(y,f(x,y)))] \\
         \varphi_3 & = \{\{ (\neg A(x,y) , \neg B(y) , \neg D(y,f(x,y))  \}, \{ A(x,y) , B(y)\}, \{ A(x,y) , D(y,f(x,y)) \}\} \\
-        \varphi_3 & = \{\{ (\neg A(x,y) , \neg B(y) , \neg D(y,f(x,y))  \}, \{ A(a,b) , B(b)\}, \{ A(c,d) , D(d,f(c,d)) \}\} 
+        \varphi_3 & = \{\{ (\neg A(x,y) , \neg B(y) , \neg D(y,f(x,y))  \}, \{ A(a,b) , B(b)\}, \{ A(c,d) , D(d,f(c,d)) \}\}
       \end{align*}
-      
+
     \end{parts}
 
     \vspace{1em}
+
+    \question
+    \begin{align*}
+      &\forall_x[(Child(x) \lor SweetTooth(x)) \to LikesCandy(x)] \\
+      &\forall_x[(\neg Child(x) \land \neg SweetTooth(x)) \lor LikesCandy(x)] \\
+      &\forall_x[(\neg Child(x) \lor LikesCandy(x)) \land (\neg SweetTooth(x)) \lor LikesCandy(x))] \\\\
+      &HU(\theta \*) = \{Max, Anna\} \\
+      &HE(\theta \*) = \{[\neg Child(Max) \lor LikesCandy(Max)], [\neg SweetTooth(Max) \lor LikesCandy(Max)], \\
+      &HE(\theta \*) = \{[\neg Child(Anna) \lor LikesCandy(Anna)], [\neg SweetTooth(Anna) \lor LikesCandy(Anna)], \\
+      & Child(Max), \neg LikesCandy(Max), SweetTooth(Anna), \neg LikesCandy(Anna)
+      \}
+    \end{align*}
+
+    As we can see from the Skolem Normal Form, Max must either like candy or not be a child. Since we know he is a child,
+    he therefore must like candy. Similarly with Anna, she must either like candy or not have a sweet tooth. Since we know
+    she has a sweet tooth, she must like candy.
+
 
   \end{questions}
 
