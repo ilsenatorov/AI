@@ -28,6 +28,13 @@
   \begin{questions}
     \setcounter{question}{13}
     \question
+    A formula is valid if all possible values return true.
+    In CNF form, a clause is made up of items connected with '$\lor$'. $P \lor \neg P$ is a tautology, which by definition is valid.
+    If we have just one or the other, but not both, we can always have a false value.
+    $P$ will always be false by being 0, and $\neg P$ will always be false when $P = 1$.
+    Unless we have both $P \lor \neg P$, any clause can be false. If any clause in CNF is false,
+    then the whole thing is false, because CNF by definition is clauses connected by '$\land$'.
+    Thus, each clause needs any item and its negation to be present in order to be valid.
 
     \vspace{1em}
     \question
@@ -75,7 +82,7 @@
       \end{align*}
       \part
       \begin{align*}
-        \varphi_3 & = \forall x \forall y \neg \forall z [A(x,y) \implies (B(y) \land D(y,z)]  \\
+        \varphi_3 & = \forall x \forall y \neg \forall z [A(x,y) \to (B(y) \land D(y,z)]  \\
         \varphi_3 & = \forall x \forall y \neg \forall z [(A(x,y) \to (B(y) \land D(y,z)) \land ((B(y) \land D(y,z)) \to A(x,y))]  \\
         \varphi_3 & = \forall x \forall y \neg \forall z [(A(x,y) \lor \neg (B(y) \land D(y,z)) \land (\neg A(x,y) \lor (B(y) \land D(y,z))] \\
         \varphi_3 & = \forall x \forall y \forall z [(A(x,y) \lor \neg (B(y) \land \neg D(y,z)) \land (\neg A(x,y) \lor (B(y) \land  D(y,z))] \\
