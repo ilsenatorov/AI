@@ -18,7 +18,7 @@
 
 
 ;;; (1) every element has exactly one successor
-;;; TODO
+(assert (forall (Element x))
 
 
 ;;; (2) successor relation is asymmetric

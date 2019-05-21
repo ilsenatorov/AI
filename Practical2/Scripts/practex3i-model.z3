@@ -5,5 +5,20 @@
 (declare-fun Q (Int Int) Bool)
 (declare-fun R (Int Int) Bool)
 
-;; TODO: model exercise 3(i) here
+
+;(declare-const x Int)
+;(declare-const y Int)
+
+
+(assert (forall ((x Int))))
+
+
+;(assert
+;    (exists (
+;        (x Element)
+;        (y Element)
+;        )
+;        (and (Sum x x y) (not (Predicate y)))
+;    )
+;)
 
