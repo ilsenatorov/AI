@@ -26,7 +26,7 @@
 ; Assumption 3
 (assert
     (forall ((x Int))
-        (exists ((y Int))
+        (forall ((y Int))
             (implies
                 (or
                     (P x y)
@@ -40,7 +40,8 @@
     )
 )
 
-; Test
+; Test satisfiable
+(push)
 (assert
     (forall ((x Int))
         (exists ((y Int))
@@ -48,6 +49,19 @@
         )
     )
 )
-
 (check-sat)
+(pop)
+
+; For this to be valid, the negation should not be satisfiable
+(push)
+(assert
+    (forall ((x Int))
+        (exists ((y Int))
+            (not (Q x y))
+        )
+    )
+)
+(check-sat)
+(pop)
+
 

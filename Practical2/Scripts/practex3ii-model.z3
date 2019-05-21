@@ -16,10 +16,10 @@
 
 ;;; The formulas:
 
-
 ;;; (1) every element has exactly one successor
-(assert (forall (Element x))
-
+;(assert
+;    (forall (x Element) (y Element))
+;)
 
 ;;; (2) successor relation is asymmetric
 ;;; TODO
@@ -30,11 +30,24 @@
 
 
 ;;; (4) adding the zero element to any other element gives the element again
-;;; TODO
-
+(assert
+    (forall ((x Element) (y Element))
+        (and
+            (IsZero x)
+            (Sum x y y)
+        )
+    )
+)
 
 ;;; (5) summing is commutative
-;;; TODO
+(assert
+    (forall ((x Element) (y Element) (z Element))
+        (=
+            (Sum x y z)
+            (Sum y x z)
+        )
+    )
+)
 
 
 ;;; (6) summing two elements has at most one result
@@ -51,13 +64,27 @@
 
 
 ;;; (9) the zero element satisfies the predicate
-;;; TODO
+(assert
+    (forall ((x Element))
+        (implies
+            (IsZero x)
+            (Predicate x)
+        )
+    )
+)
 
 
-;;; (10) the sum of every element by itself does not satisfy the predicate
-(assert (exists ((x Element) (y Element)) (and (Sum x x y) (not (Predicate y)))))
-
-
+;;; (10) There is an element whose sum with itself does not satisfy the predicate
+(assert
+    (exists ((x Element) (y Element))
+        (and
+            (Sum x x y)
+            (not (Predicate y))
+        )
+    )
+)
 
 
 (check-sat)
+(get-model)
+
