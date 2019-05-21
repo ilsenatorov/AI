@@ -5,20 +5,49 @@
 (declare-fun Q (Int Int) Bool)
 (declare-fun R (Int Int) Bool)
 
+; Assumption 1
+(assert
+    (forall ((x Int))
+        (exists ((y Int))
+            (P x y)
+        )
+    )
+)
 
-;(declare-const x Int)
-;(declare-const y Int)
+; Assumption 2
+(assert
+    (forall ((x Int))
+        (exists ((y Int))
+            (not (R x y))
+        )
+    )
+)
 
+; Assumption 3
+(assert
+    (forall ((x Int))
+        (exists ((y Int))
+            (implies
+                (or
+                    (P x y)
+                    (not (R x y))
+                )
+                (forall ((z Int))
+                    (Q x z)
+                )
+            )
+        )
+    )
+)
 
-(assert (forall ((x Int))))
+; Test
+(assert
+    (forall ((x Int))
+        (exists ((y Int))
+            (Q x y)
+        )
+    )
+)
 
-
-;(assert
-;    (exists (
-;        (x Element)
-;        (y Element)
-;        )
-;        (and (Sum x x y) (not (Predicate y)))
-;    )
-;)
+(check-sat)
 
