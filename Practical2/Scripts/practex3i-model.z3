@@ -25,15 +25,19 @@
 
 ; Assumption 3
 (assert
-    (forall ((x Int))
-        (forall ((y Int))
-            (implies
+    (forall ((x Int) (y Int))
+        (implies
+            (or
+                (P x y)
+                (not (R x y))
+            )
+            (forall ((z Int))
                 (or
-                    (P x y)
-                    (not (R x y))
-                )
-                (forall ((z Int))
                     (Q x z)
+                    (and
+                        (not (P y z))
+                        (R y z)
+                    )
                 )
             )
         )
@@ -65,5 +69,3 @@
 (echo "Check that ~Q(x,y ) is not satisfiable")
 (check-sat)
 (pop)
-
-
