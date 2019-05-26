@@ -44,28 +44,15 @@
     )
 )
 
-; Test satisfiable
-(push)
-(assert
-    (forall ((x Int))
-        (exists ((y Int))
-            (Q x y)
-        )
-    )
-)
-(echo "Check that Q(x,y ) is satisfiable")
-(check-sat)
-(pop)
-
 ; For this to be valid, the negation should not be satisfiable
-(push)
 (assert
-    (forall ((x Int))
-        (exists ((y Int))
-            (not (Q x y))
+    (not
+        (forall ((x Int))
+            (exists ((y Int))
+                (Q x y)
+            )
         )
     )
 )
 (echo "Check that ~Q(x,y ) is not satisfiable")
 (check-sat)
-(pop)

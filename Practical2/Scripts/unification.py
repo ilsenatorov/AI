@@ -62,6 +62,9 @@ class Substitution(dict):
         for key, val in s1.items():
             if isinstance(val, Constant):
                 comp[key] = val
+            
+            elif val in s2:
+
 
         return comp
 
