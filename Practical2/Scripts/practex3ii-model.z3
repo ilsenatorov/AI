@@ -15,19 +15,47 @@
 
 
 ;;; The formulas:
-
 ;;; (1) every element has exactly one successor
-;(assert
-;    (forall (x Element) (y Element))
-;)
+(assert
+    (forall ((x Element))
+        (exists ((y Element))
+            (and
+                (Successor x y )
+                (forall ((z Element))
+                    (implies
+                        (Successor x z)
+                        (= y z)
+                    )
+                )
+            )
+        )
+    )
+)
 
 ;;; (2) successor relation is asymmetric
-;;; TODO
-
+(assert
+    (forall ((x Element) (y Element))
+        (implies
+            (Successor x y)
+            (not (Successor y x))
+        )
+    )
+)
 
 ;;; (3) there is exactly one zero element
-;;; TODO
-
+(assert
+    (exists ((x Element))
+        (and
+            (IsZero x)
+            (forall ((y Element))
+                (implies
+                    (IsZero x)
+                    (= x y)
+                )
+            )
+        )
+    )
+)
 
 ;;; (4) adding the zero element to any other element gives the element again
 (assert
@@ -51,16 +79,66 @@
 
 
 ;;; (6) summing two elements has at most one result
-;;; TODO
+(assert
+    (forall ((x Element) (y Element))
+        (or
+            (not
+                (exists ((z Element))
+                    (Sum x y z)
+                )
+            )
+            (exists ((z Element))
+                (and
+                    (implies
+                        (Sum x y z)
+                        (forall ((n Element))
+                            (=
+                                n
+                                z
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 
 ;;; (7) if element z is the sum of elements x y, x' is the successor of x, then
 ;;;     the successor of z is the result of the sum of x' and y
-;;; TODO
+(assert
+    (forall ((x Element) (y Element) (z Element) (xp Element) (zp Element))
+        (implies
+            (and
+                (Successor x xp)
+                (Sum x y z)
+            )
+             (and
+                (Successor z zp)
+                (Sum xp y zp)
+            )
+        )
+    )
+)
 
 
-;;; (8) the predicate holds for an element iff it does not hold for its the successor
-;;; TODO
+;; (8) the predicate holds for an element iff it does not hold for its the successor
+(assert
+    (forall ((x Element) (y Element))
+        (and
+            (Successor x y)
+            (implies
+                (Predicate x)
+                (not (Predicate y))
+            )
+            (implies
+                (not (Predicate y))
+                (Predicate x)
+            )
+        )
+    )
+)
 
 
 ;;; (9) the zero element satisfies the predicate
@@ -86,5 +164,4 @@
 
 
 (check-sat)
-(get-model)
-
+;(get-model)

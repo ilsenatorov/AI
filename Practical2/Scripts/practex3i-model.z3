@@ -49,6 +49,7 @@
         )
     )
 )
+(echo "Check that Q(x,y ) is satisfiable")
 (check-sat)
 (pop)
 
@@ -61,6 +62,7 @@
         )
     )
 )
+(echo "Check that ~Q(x,y ) is not satisfiable")
 (check-sat)
 (pop)
 
