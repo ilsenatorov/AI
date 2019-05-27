@@ -54,5 +54,5 @@
         )
     )
 )
-(echo "Check that ~Q(x,y ) is not satisfiable")
+(echo "Check that ~Q(x, y) is not satisfiable")
 (check-sat)

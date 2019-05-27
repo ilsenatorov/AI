@@ -57,13 +57,26 @@ class Substitution(dict):
         #             comp[key1] = val1.apply_substitutions({key2: val2})
         #         else:
         #             comp[key1] = val1.apply_substitutions({key2: val2})
-        #             comp[key2] = val2
+        #             comp[key2]
+        # = val2
 
-        for key, val in s1.items():
-            if isinstance(val, Constant):
-                comp[key] = val
-            
-            elif val in s2:
+        for key2, val2 in s2.items():
+            used = False
+            for key1, val1 in s1.items():
+                if isinstance(val1, Constant):
+                    comp[key1] = val1
+                elif val1.contains_variable(key2):
+                    comp[key1] = val1.apply_substitutions({key2: val2})
+                    used = True
+                else:
+                    comp[key1] = val1
+            if not used and key2 not in s1:
+                comp[key2] = val2
+        # for key, val in s1.items():
+        #     if isinstance(val, Constant):
+        #         comp[key] = val
+
+        #     elif val in s2:
 
 
         return comp
@@ -95,6 +108,7 @@ assert Substitution.Composition(s1, s2) == Substitution({x: z})
 
 s1 = Substitution({x: y})
 s2 = Substitution({x: z})
+print(Substitution.Composition(s1, s2))
 assert Substitution.Composition(s1, s2) == Substitution({x: y})
 
 s1 = Substitution({x: f(y)})
@@ -133,29 +147,58 @@ def compute_disagreement_set(atoms):
     You can assume that all atoms are over the same predicate.
     """
     if len(atoms) <= 1:
-        return []
+        return set()
 
     # Get the predicate's arity
     arity = next(iter(atoms)).symbol.arity
 
     # check the items in each atom, return first disagreement
-    for atom in atoms:
+    for i in range(arity):
+        function_count = set()
         mismatch_set = set()
-        for i in len(arity):
+        has_var = False
+        for atom in atoms:
             mismatch_set.add(atom.terms[i])
+            if isinstance(atom.terms[i], Function):
+                function_count.add(atom.terms[i].symbol)
+            if isinstance(atom.terms[i], Variable):
+                has_var = True
 
         if len(mismatch_set) > 1:
-            return mismatch_set
+            if has_var or len(function_count) > 1:
+                return mismatch_set
+            else:
+                return compute_disagreement_set(mismatch_set)
     return set()
-
 
 def unification(atoms):
     """
     Runs the unification algorithm on the given set of atoms. If there exists
     a unifier for atoms, returns an idempotent mgu. Otherwise, returns None.
     """
-    # TODO: Implementation
-    raise NotImplementedError("unification has not been implemented yet")
+    if len(atoms) <= 1:
+        return
+
+    arity = next(iter(atoms)).symbol.arity
+    variables = set()
+    terms = set()
+
+    T = set(atoms)
+    s = Substitution()
+    while len(T) > 1:
+        D = compute_disagreement_set(T)
+        for item in D:
+            if isinstance(item, Variable):
+                variables.add(item)
+            elif isinstance(item, Term):
+                terms.add(item)
+
+        for var in variables:
+            for term in terms:
+                if term.contains_variable(var):
+                    break
+                return None
+
 
 
 def run_disagreement_set_print_result(atoms):
