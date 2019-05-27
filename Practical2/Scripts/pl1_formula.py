@@ -27,8 +27,8 @@ following two functions:
 The following functions may become useful (with their obvious meaning),
 the parameter exprs gives a list of expressions:
     get_variable(exprs) # returns None if exprs does not contain any Variable object
-    expressions_to_string(exprs) 
-    print_expressions(exprs)     
+    expressions_to_string(exprs)
+    print_expressions(exprs)
 
 """
 

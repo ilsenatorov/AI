@@ -115,28 +115,43 @@ def unification(atoms):
     a unifier for atoms, returns an idempotent mgu. Otherwise, returns None.
     """
     if len(atoms) <= 1:
-        return
-
-    arity = next(iter(atoms)).symbol.arity
-    variables = set()
-    terms = set()
+        return atoms
 
     T = set(atoms)
-    s = Substitution()
+    sub = Substitution()
+
     while len(T) > 1:
         D = compute_disagreement_set(T)
+        variables = set()
+        terms = set()
+
         for item in D:
             if isinstance(item, Variable):
                 variables.add(item)
-            elif isinstance(item, Term):
-                terms.add(item)
+            terms.add(item)
+
+        next_sub = Substitution()
 
         for var in variables:
             for term in terms:
-                if term.contains_variable(var):
-                    break
-                return None
+                if not term.contains_variable(var):
+                    next_sub = Substitution({var: term})
 
+        if not next_sub:
+            return None
+
+        if not sub:
+            sub = next_sub
+        else:
+            sub = sub.Composition(sub, next_sub)
+
+        new_T = set()
+        for item in T:
+            new_T.add(item.apply_substitutions(sub))
+
+        T = new_T
+
+    return sub
 
 
 def run_disagreement_set_print_result(atoms):
