@@ -121,38 +121,40 @@ def unification(atoms):
     sub = Substitution()
 
     while len(T) > 1:
-        D = compute_disagreement_set(T)
         variables = set()
         terms = set()
+        new_T = set()
+        next_sub = Substitution()
 
-        for item in D:
+        disagreement_set = compute_disagreement_set(T)
+
+        # keep track of variables and terms in the disagreement set
+        for item in disagreement_set:
             if isinstance(item, Variable):
                 variables.add(item)
             terms.add(item)
 
-        next_sub = Substitution()
-
+        # check that t_k does contains x_k
         for var in variables:
             for term in terms:
                 if not term.contains_variable(var):
                     next_sub = Substitution({var: term})
 
+        # t_k contains x_k
         if not next_sub:
             return None
 
-        if not sub:
-            sub = next_sub
-        else:
-            sub = sub.Composition(sub, next_sub)
+        # make composition (or initialize substitution)
+        sub = next_sub if not sub else sub.Composition(sub, next_sub)
 
-        new_T = set()
+        # make approriate substitutions
         for item in T:
             new_T.add(item.apply_substitutions(sub))
 
+        # replace T with substitutions
         T = new_T
 
     return sub
-
 
 def run_disagreement_set_print_result(atoms):
     print("Clause: {%s}" % (", ".join([str(e) for e in atoms])))
