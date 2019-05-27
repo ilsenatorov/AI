@@ -46,20 +46,6 @@ class Substitution(dict):
         assert(isinstance(s2, Substitution))
         comp = Substitution()
 
-        # for key2, val2 in s2.items():
-        #     for key1, val1 in s1.items():
-        #         if key1 == key2:
-        #             comp[key1] = val1.apply_substitutions({key2: val2})
-        #         elif isinstance(val1, Constant):
-        #             comp[key1] = val1
-        #             comp[key2] = val2
-        #         elif val1.contains_variable(key2):
-        #             comp[key1] = val1.apply_substitutions({key2: val2})
-        #         else:
-        #             comp[key1] = val1.apply_substitutions({key2: val2})
-        #             comp[key2]
-        # = val2
-
         for key2, val2 in s2.items():
             used = False
             for key1, val1 in s1.items():
@@ -72,13 +58,6 @@ class Substitution(dict):
                     comp[key1] = val1
             if not used and key2 not in s1:
                 comp[key2] = val2
-        # for key, val in s1.items():
-        #     if isinstance(val, Constant):
-        #         comp[key] = val
-
-        #     elif val in s2:
-
-
         return comp
 
     def __str__(self):
@@ -94,47 +73,6 @@ atom1 = P(x, c, f(y))
 atom2 = P(x, z, z)
 clause = [atom1, atom2]
 
-
-
-s1 = Substitution({x: z})
-s2 = Substitution({y: c})
-print(Substitution.Composition(s1, s2))
-assert Substitution.Composition(s1, s2) == Substitution({x: z, y: c})
-
-s1 = Substitution({x: y})
-s2 = Substitution({y: z})
-print(Substitution.Composition(s1, s2))
-assert Substitution.Composition(s1, s2) == Substitution({x: z})
-
-s1 = Substitution({x: y})
-s2 = Substitution({x: z})
-print(Substitution.Composition(s1, s2))
-assert Substitution.Composition(s1, s2) == Substitution({x: y})
-
-s1 = Substitution({x: f(y)})
-s2 = Substitution({y: z})
-assert Substitution.Composition(s1, s2) == Substitution({x: f(z)})
-
-s1 = Substitution({x: z})
-s2 = Substitution({y: c})
-assert Substitution.Composition(s1, s2) == Substitution({x: z, y:c})
-
-
-
-s1 = Substitution({x: y, y: c})
-s2 = Substitution({y: z})
-print(Substitution.Composition(s1, s2))
-assert Substitution.Composition(s1, s2) == Substitution({x: z, y: c})
-
-s1 = Substitution({x: f(z)})
-s2 = Substitution({z: y})
-print(Substitution.Composition(s1, s2))
-assert Substitution.Composition(s1, s2) == Substitution({x: f(y)})
-
-s1 = Substitution({x: y, y: f(y), z: c})
-s2 = Substitution({y: z})
-print(Substitution.Composition(s1, s2))
-assert Substitution.Composition(s1, s2) == Substitution({x: z, y: f(z), z: c})
 
 def compute_disagreement_set(atoms):
     """
