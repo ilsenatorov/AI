@@ -457,11 +457,12 @@ class ManhattanMaxHeuristic(Heuristic):
         assert(isinstance(state, State))
         # The actual heuristic computation.
         # TODO Done
-        print(state.coins_collected)
-        uncollected = [coin for coin in self.coin_locations if coin not in state.coins_collected]
+        uncollected = [coin for coin in self.coin_locations if not state.has_collected_coin_at_location(coin[0], coin[1])]
         distances = [ManhattanDistance(xy, state) for xy in uncollected]
-        # print(max(distances))
-        return max(distances)
+        if distances:
+            return max(distances)
+        else:
+            return 0
 
         # raise NotImplemented("ManhattanMaxHeuristic has not been implemented yet")
 
@@ -481,9 +482,12 @@ class ManhattanSumHeuristic(Heuristic):
         assert(isinstance(state, State))
         # The actual heuristic computation.
         # TODO
-        distances = [ManhattanDistance(xy, state) for xy in self.coin_locations]
-        print(self.coin_locations)
-        return sum(distances)
+        uncollected = [coin for coin in self.coin_locations if not state.has_collected_coin_at_location(coin[0], coin[1])]
+        distances = [ManhattanDistance(xy, state) for xy in uncollected]
+        if distances:
+            return sum(distances)
+        else:
+            return 0
         # raise NotImplemented("ManhattanSumHeuristic has not been implemented yet")
 
 
