@@ -284,7 +284,7 @@ def print_search_node(grid, node):
     if max([grid.width, grid.height]) > 100:
         return
 
-    os.system('cls' if os.name == 'nt' else 'clear')  
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     visited = set()
     p = node
@@ -328,7 +328,7 @@ def print_search_progress(grid, state, expanded, visited):
     if max([grid.width, grid.height]) > 100:
         return
 
-    os.system('cls' if os.name == 'nt' else 'clear')  
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     for y in range(grid.height):
         s1 = ""
@@ -373,9 +373,9 @@ def astar_search(grid, heuristic, print_rate_per_sec = None):
     visited = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: None)))
     visited[initial_state.coins_collected][initial_state.x][initial_state.y] = open_list[0].h
     print_search_progress(grid, open_list[0].state, expanded, visited)
-    
+
     result = SearchResult()
-            
+
     while len(open_list) > 0:
         node = heapq.heappop(open_list)
         if node.check_if_flagged(expanded):
@@ -404,7 +404,7 @@ def astar_search(grid, heuristic, print_rate_per_sec = None):
 class Heuristic(object):
     """
     Heuristic base class.
-    
+
     Variables:
         grid: stores a reference to the grid
         coin_locations: list of the coordinates of all coins in the grid
@@ -437,6 +437,11 @@ class BlindHeuristic(Heuristic):
         return 0
 
 
+def ManhattanDistance(xy, state):
+    ''' Calculates the Manhattan Distance to point x,y from agent in current state '''
+    x, y = xy
+    return abs(x - state.x) + abs(y - state.y)
+
 class ManhattanMaxHeuristic(Heuristic):
     """
     The maximal distance from the agent's current coordinate to the coordinates
@@ -451,8 +456,14 @@ class ManhattanMaxHeuristic(Heuristic):
     def __call__(self, state):
         assert(isinstance(state, State))
         # The actual heuristic computation.
-        # TODO
-        raise NotImplemented("ManhattanMaxHeuristic has not been implemented yet")
+        # TODO Done
+        print(state.coins_collected)
+        uncollected = [coin for coin in self.coin_locations if coin not in state.coins_collected]
+        distances = [ManhattanDistance(xy, state) for xy in uncollected]
+        # print(max(distances))
+        return max(distances)
+
+        # raise NotImplemented("ManhattanMaxHeuristic has not been implemented yet")
 
 
 class ManhattanSumHeuristic(Heuristic):
@@ -470,7 +481,10 @@ class ManhattanSumHeuristic(Heuristic):
         assert(isinstance(state, State))
         # The actual heuristic computation.
         # TODO
-        raise NotImplemented("ManhattanSumHeuristic has not been implemented yet")
+        distances = [ManhattanDistance(xy, state) for xy in self.coin_locations]
+        print(self.coin_locations)
+        return sum(distances)
+        # raise NotImplemented("ManhattanSumHeuristic has not been implemented yet")
 
 
 class ManhattanOrderedSumHeuristic(Heuristic):
