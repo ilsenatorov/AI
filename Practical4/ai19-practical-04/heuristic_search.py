@@ -464,8 +464,6 @@ class ManhattanMaxHeuristic(Heuristic):
         else:
             return 0
 
-        # raise NotImplemented("ManhattanMaxHeuristic has not been implemented yet")
-
 
 class ManhattanSumHeuristic(Heuristic):
     """
@@ -481,14 +479,13 @@ class ManhattanSumHeuristic(Heuristic):
     def __call__(self, state):
         assert(isinstance(state, State))
         # The actual heuristic computation.
-        # TODO
+        # TODO Done
         uncollected = [coin for coin in self.coin_locations if not state.has_collected_coin_at_location(coin[0], coin[1])]
         distances = [ManhattanDistance(xy, state) for xy in uncollected]
         if distances:
             return sum(distances)
         else:
             return 0
-        # raise NotImplemented("ManhattanSumHeuristic has not been implemented yet")
 
 
 class ManhattanOrderedSumHeuristic(Heuristic):
