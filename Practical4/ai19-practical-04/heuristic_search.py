@@ -442,6 +442,12 @@ def ManhattanDistance(xy, state):
     x, y = xy
     return abs(x - state.x) + abs(y - state.y)
 
+def ManhattanDistance_points(xy1, xy2):
+    ''' Calculate the Distance between two coins '''
+    x1, y1 = xy1
+    x2, y2 = xy2
+    return abs(x1 - x2) + abs(y1 - y2)
+
 class ManhattanMaxHeuristic(Heuristic):
     """
     The maximal distance from the agent's current coordinate to the coordinates
@@ -502,6 +508,17 @@ class ManhattanOrderedSumHeuristic(Heuristic):
         assert(isinstance(state, State))
         # The actual heuristic computation.
         # TODO
+        uncollected = [coin for coin in self.coin_locations if not state.has_collected_coin_at_location(coin[0], coin[1])]
+        if not uncollected:
+            return 0
+        else:
+            distances = [(ManhattanDistance(xy, state), xy) for xy in uncollected]
+            sorted_distances = sorted(distances, key=lambda tup:tup[0])
+            closest = sorted_distances.pop(0)
+            rest = []
+            for i in range(1,len(sorted_distances)):
+                rest.append(ManhattanDistance_points(sorted_distances[i-1][1], sorted_distances[i][1]))
+            return closest[0] + sum(rest)
         raise NotImplemented("ManhattanOrderedSumHeuristic has not been implemented yet")
 
 
