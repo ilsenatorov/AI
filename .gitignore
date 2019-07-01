@@ -11,3 +11,4 @@
 *.zip
 *.xoj
 .settings
+.project
