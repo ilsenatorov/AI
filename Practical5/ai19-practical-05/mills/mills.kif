@@ -65,13 +65,28 @@
 ; Add additional facts as you wish
 
 ;; whether player places a piece
-(<= (has_placedd ?player)
+(<= (has_placed ?player)
     (does ?player (place ?x ?y))
 )
 
 ;; whether player has taken a piece
 (<= (has_taken ?player)
     (does ?player (take ?x ?y))
+)
+
+(<= (enters_cell ?x ?y ?player)
+    (or
+        (does ?player (place ?x ?y)) ; player places a piece
+        (does ?player (move ?xi ?yi ?x ?y)) ; player moves into cell
+    )
+)
+
+(<= (leaves_cell ?x ?y ?player)
+    (opponent ?player ?opponent)
+    (or
+        (does ?opponent (take ?x ?y)) ; opponent takes a piece
+        (does ?player (move ?x ?y ?xf ?yf)) ; player steps out of cell
+    )
 )
 
 ; horizontal mill
@@ -90,52 +105,32 @@
     (true (cell ?x ?y2 ?player))
 )
 
-; did player move a piece into new location for a horizontal mill?
-; move into x0
+; did player move or place a piece into new location for a horizontal mill?
 (<= (new_mill ?player)
-    (does ?player (move ?locx ?locy ?x0 ?y))
-    (true (horizontal-line ?y ?x0 ?x1 ?x2))
-    (true (cell ?x0 ?y ?player))
-    (true (cell ?x1 ?y ?player))
-    (true (cell ?x2 ?y ?player))
-)
-; move into x1
-(<= (new_mill ?player)
-    (does ?player (move ?locx ?locy ?x1 ?y))
-    (true (horizontal-line ?y ?x0 ?x1 ?x2))
-    (true (cell ?x0 ?y ?player))
-    (true (cell ?x1 ?y ?player))
-    (true (cell ?x2 ?y ?player))
-)
-; move into x2
-(<= (new_mill ?player)
-    (does ?player (move ?locx ?locy ?x2 ?y))
+    (or
+        (does ?player (move ?locx ?locy ?x0 ?y)) ; move into x0
+        (does ?player (move ?locx ?locy ?x1 ?y)) ; move into x1
+        (does ?player (move ?locx ?locy ?x2 ?y)) ; move into x2
+        (does ?player (place ?x0 ?y)) ; place in x0
+        (does ?player (place ?x1 ?y)) ; place in x1
+        (does ?player (place ?x2 ?y)) ; place in x2
+    )
     (true (horizontal-line ?y ?x0 ?x1 ?x2))
     (true (cell ?x0 ?y ?player))
     (true (cell ?x1 ?y ?player))
     (true (cell ?x2 ?y ?player))
 )
 
-; did player move a piece into new location for a vertical mill?
-; move into y0
+; did player move or place a piece into new location for a vertical mill?
 (<= (new_mill ?player)
-    (does ?player (move ?locx ?locy ?x ?y0))
-    (true (vertical-line ?x ?y0 ?y1 ?y2))
-    (true (cell ?x ?y0 ?player))
-    (true (cell ?x ?y1 ?player))
-    (true (cell ?x ?y2 ?player))
-)
-; move into y1
-(<= (new_mill ?player)
-    (does ?player (move ?locx ?locy ?x ?y1))
-    (true (vertical-line ?x ?y0 ?y1 ?y2))
-    (true (cell ?x ?y0 ?player))
-    (true (cell ?x ?y1 ?player))
-    (true (cell ?x ?y2 ?player))
-)
-; move into y2
-(<= (new_mill ?player)
-    (does ?player (move ?locx ?locy ?x ?y2))
+    (or
+        (does ?player (move ?locx ?locy ?x ?y0)) ; move into y0
+        (does ?player (move ?locx ?locy ?x ?y1)) ; move into y1
+        (does ?player (move ?locx ?locy ?x ?y2)) ; move into y2
+        (does ?player (place ?x ?y0)) ; place in y0
+        (does ?player (place ?x ?y1)) ; place in y1
+        (does ?player (place ?x ?y2)) ; place in y2
+    )
     (true (vertical-line ?x ?y0 ?y1 ?y2))
     (true (cell ?x ?y0 ?player))
     (true (cell ?x ?y1 ?player))
@@ -169,23 +164,24 @@
 )
 
 ;; You may want to add additional rules (to encode e.g., disjunctive conditions):
-(<= (legal ?player (take ?x ?y))
-    (true (special-turn ?player))
-    (opponent ?player ?opponent)
-    ;; TODO: complete the condition
-    (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
-    ; TODO - can only take opponent mill pieces if no other options
-    ; (not (true (has_mill ?opponent)))
-)
+;(<= (legal ?player (take ?x ?y))
+;    (true (special-turn ?player))
+;    (opponent ?player ?opponent)
+;    ;; TODO: complete the condition
+;    (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
+;    ; TODO - can only take opponent mill pieces if no other options
+;    ; (not (true (has_mill ?opponent)))
+;)
 
 ;; Moving stones to adjacent locations
 (<= (legal ?player (move ?x0 ?y0 ?x1 ?y1))
     (true (turn ?player))
     (true (free-stones ?player 0)) ; moving only allowed once all stones have been placed
     ;; TODO: complete the condition
-    (true (adjacent ?x0 ?y0 ?x1 ?y1)) ; cell must be adjacent
-    (not (true (cell ?x ?y red))) ; move to cell must be empty
-    (not (true (cell ?x ?y blue))) ; move to cell must be empty
+    (adjacent ?x0 ?y0 ?x1 ?y1) ; cell must be adjacent
+    (not (true (cell ?x1 ?y1 red))) ; move to cell must be empty
+    (not (true (cell ?x1 ?y1 blue))) ; move to cell must be empty
+    (true (cell ?x0 ?y0 ?player)) ; player can only move their own stone
 )
 
 ;; Noop action
@@ -206,7 +202,7 @@
     (opponent ?player ?opponent)
     (true (turn ?player))
     ; TODO: complete the condition
-    (not (true (new_mill ?player))) ; if no new mill
+    (not (new_mill ?player)) ; if no new mill
 )
 
 
@@ -223,7 +219,7 @@
 (<= (next (special-turn ?player))
     (true (turn ?player))
     ;; TODO: complete the condition
-    (true (new_mill ?player)) ; new mill
+    (new_mill ?player) ; new mill
 )
 
 
@@ -239,7 +235,7 @@
 ; You may want to include additional rules to represent disjunctive conditions:
 (<= (next (free-stones ?player ?num))
     ;; TODO: complete the condition
-    (not (has_placedd ?player)) ; player did not place
+    (not (has_placed ?player)) ; player did not place
     (true (free-stones ?player ?num)) ; keep number of free stones
 )
 
@@ -249,15 +245,9 @@
 (<= (next (stones ?player ?num))
     ;; TODO: complete the condition
     (opponent ?player ?opponent) ; get opponent
-    (does opponent (take x? y?)) ; if opponent took a stone
+    (does opponent (take ?x ?y)) ; if opponent took a stone
     (true (stones ?player ?old)) ; previous value
     (predecessor ?old ?num) ; previous value - 1
-)
-
-;; You may want to include additional rules to represent disjunctive conditions:
-(<= (next (stones ?player ?num))
-    ;; TODO: complete the condition
-    (true (stones ?player ?num)) ; keep the same
 )
 
 
@@ -265,29 +255,19 @@
 ;; TODO
 (<= (next (cell ?x ?y ?player))
     ;; TODO: complete the condition
-    (does ?player (place ?x ?y)) ; player places a piece)
-)
-
-; FIXME - can I add this part? - player moves to new cell
-(<= (next (cell ?x ?y ?player))
-    ;; TODO: complete the condition
-    (does ?player (move ?xi ?yi ?x ?y)) ; player moves into new cell)
-)
-
-; FIXME - can I add this part? - player leaves old cell
-(<= (next (cell ?xi ?yi b))
-    ;; TODO: complete the condition
-    (does ?player (move ?xi ?yi ?x ?y)) ; player places a piece)
+    (or
+        (does ?player (place ?x ?y)) ; player places a piece
+        (does ?player (move ?xi ?yi ?x ?y)) ; player moves into cell
+    )
 )
 
 
 ;; You may want to include additional rules to represent disjunctive conditions:
 (<= (next (cell ?x ?y ?player))
     ;; TODO: complete the condition
+    (not (leaves_cell ?x ?y ?player))
     (true (cell ?x ?y ?player)) ; cell not affected
 )
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
