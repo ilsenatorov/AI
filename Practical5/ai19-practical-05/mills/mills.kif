@@ -90,23 +90,23 @@
 )
 
 ; horizontal mill
-(<= (has_mill ?player)
-    (true (horizontal-line ?y ?x0 ?x1 ?x2))
+(<= (has_horizontal_mill ?player)
+    (horizontal-line ?y ?x0 ?x1 ?x2)
     (true (cell ?x0 ?y ?player))
     (true (cell ?x1 ?y ?player))
     (true (cell ?x2 ?y ?player))
 )
 
 ; vertical mill
-(<= (has_mill ?player)
-    (true (vertical-line ?x ?y0 ?y1 ?y2))
+(<= (has_vertical_mill ?player)
+    (vertical-line ?x ?y0 ?y1 ?y2)
     (true (cell ?x ?y0 ?player))
     (true (cell ?x ?y1 ?player))
     (true (cell ?x ?y2 ?player))
 )
 
 ; did player move or place a piece into new location for a horizontal mill?
-(<= (new_mill ?player)
+(<= (new_horizontal_mill ?player)
     (or
         (does ?player (move ?locx ?locy ?x0 ?y)) ; move into x0
         (does ?player (move ?locx ?locy ?x1 ?y)) ; move into x1
@@ -115,14 +115,14 @@
         (does ?player (place ?x1 ?y)) ; place in x1
         (does ?player (place ?x2 ?y)) ; place in x2
     )
-    (true (horizontal-line ?y ?x0 ?x1 ?x2))
+    (horizontal-line ?y ?x0 ?x1 ?x2)
     (true (cell ?x0 ?y ?player))
     (true (cell ?x1 ?y ?player))
     (true (cell ?x2 ?y ?player))
 )
 
 ; did player move or place a piece into new location for a vertical mill?
-(<= (new_mill ?player)
+(<= (new_vertical_mill ?player)
     (or
         (does ?player (move ?locx ?locy ?x ?y0)) ; move into y0
         (does ?player (move ?locx ?locy ?x ?y1)) ; move into y1
@@ -131,7 +131,7 @@
         (does ?player (place ?x ?y1)) ; place in y1
         (does ?player (place ?x ?y2)) ; place in y2
     )
-    (true (vertical-line ?x ?y0 ?y1 ?y2))
+    (vertical-line ?x ?y0 ?y1 ?y2)
     (true (cell ?x ?y0 ?player))
     (true (cell ?x ?y1 ?player))
     (true (cell ?x ?y2 ?player))
@@ -161,6 +161,7 @@
     (opponent ?player ?opponent)
     (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
     ; TODO - stone can't be part of a mill
+    ; If has_mill and more than 3 stones
 )
 
 ;; You may want to add additional rules (to encode e.g., disjunctive conditions):
@@ -202,7 +203,8 @@
     (opponent ?player ?opponent)
     (true (turn ?player))
     ; TODO: complete the condition
-    (not (new_mill ?player)) ; if no new mill
+    (not (true (new_horizontal_mill ?player))) ; if no new mill
+    (not (true (new_vertical_mill ?player))) ; if no new mill
 )
 
 
@@ -216,12 +218,49 @@
 ;; The player currently in turn is allowed to do a special-turn if he has
 ;; completed a mill.
 ;; TODO
+;(<= (next (special-turn ?player))
+;    (true (turn ?player))
+;    ;; TODO: complete the condition
+;    (or
+;        (true (new_horizontal_mill ?player)) ; if new mill
+;        (true (new_vertical_mill ?player)) ; if new mill
+;    )
+;)
+
+
 (<= (next (special-turn ?player))
     (true (turn ?player))
     ;; TODO: complete the condition
-    (new_mill ?player) ; new mill
+    (or
+        (does ?player (move ?locx ?locy ?x ?y0)) ; move into y0
+        (does ?player (move ?locx ?locy ?x ?y1)) ; move into y1
+        (does ?player (move ?locx ?locy ?x ?y2)) ; move into y2
+        (does ?player (place ?x ?y0)) ; place in y0
+        (does ?player (place ?x ?y1)) ; place in y1
+        (does ?player (place ?x ?y2)) ; place in y2
+    )
+    (vertical-line ?x ?y0 ?y1 ?y2)
+    (true (cell ?x ?y0 ?player))
+    (true (cell ?x ?y1 ?player))
+    (true (cell ?x ?y2 ?player))
 )
 
+(<= (next (special-turn ?player))
+    (true (turn ?player))
+    ;; TODO: complete the condition
+    (or
+        (does ?player (move ?locx ?locy ?x0 ?y)) ; move into x0
+        (does ?player (move ?locx ?locy ?x1 ?y)) ; move into x1
+        (does ?player (move ?locx ?locy ?x2 ?y)) ; move into x2
+        (does ?player (place ?x0 ?y)) ; place in x0
+        (does ?player (place ?x1 ?y)) ; place in x1
+        (does ?player (place ?x2 ?y)) ; place in x2
+    )
+    (horizontal-line ?y ?x0 ?x1 ?x2)
+    (true (cell ?x0 ?y ?player))
+    (true (cell ?x1 ?y ?player))
+    (true (cell ?x2 ?y ?player))
+)
 
 ;; Update the number of free stones:
 ;; TODO
