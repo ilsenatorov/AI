@@ -69,17 +69,6 @@
     (does ?player (place ?x ?y))
 )
 
-;; whether player has taken a piece
-(<= (has_taken ?player)
-    (does ?player (take ?x ?y))
-)
-
-(<= (enters_cell ?x ?y ?player)
-    (or
-        (does ?player (place ?x ?y)) ; player places a piece
-        (does ?player (move ?xi ?yi ?x ?y)) ; player moves into cell
-    )
-)
 
 (<= (leaves_cell ?x ?y ?player)
     (opponent ?player ?opponent)
@@ -121,6 +110,8 @@
     (horizontal-line ?y ?x ?x1 ?x2)
     (true (cell ?x1 ?y ?player))
     (true (cell ?x2 ?y ?player))
+    (not (leaves_cell ?x1 ?y ?player))
+    (not (leaves_cell ?x2 ?y ?player))
 )
 
 ; did player move or place a piece into new location for a vertical mill?
@@ -133,6 +124,8 @@
     (vertical-line ?x ?y ?y1 ?y2)
     (true (cell ?x ?y1 ?player))
     (true (cell ?x ?y2 ?player))
+    (not (leaves_cell ?x ?y1 ?player))
+    (not (leaves_cell ?x ?y2 ?player))
 )
 
 
