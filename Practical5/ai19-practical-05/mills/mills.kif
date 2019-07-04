@@ -89,6 +89,12 @@
     )
 )
 
+; check if player's stone was taken
+(<= (lost_stone ?player)
+    (opponent ?player ?opponent) ; get opponent
+    (does ?opponent (take ?x ?y)) ; if opponent took a stone
+)
+
 ; horizontal mill
 (<= (has_horizontal_mill ?y ?x0 ?x1 ?x2 ?player)
     (horizontal-line ?y ?x0 ?x1 ?x2)
@@ -155,7 +161,8 @@
     ; opponent does not have a mill, so we can take any piece
     (not (has_vertical_mill ?xi ?y0 ?y1 ?y2 ?opponent))
     (not (has_horizontal_mill ?yi ?x0 ?x1 ?x2 ?opponent))
-)
+    ; if opponent has two mills, we can take any piece
+)`
 
 ;; You may want to add additional rules (to encode e.g., disjunctive conditions):
 (<= (legal ?player (take ?x ?y))
@@ -164,13 +171,10 @@
     ;; TODO: complete the condition
     (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
     ; TODO - can only take opponent mill pieces if no other options
-    (or ; opponent has a mill, and x, y is part of it
-        (has_vertical_mill ?x ?y ?y1 ?y2 ?opponent)
-        (has_horizontal_mill ?y ?x ?x1 ?x2 ?opponent)
+    (or ; opponent has a mill, but x, y is part of it
+        (has_vertical_mill ?x0 ?y0 ?y1 ?y2 ?opponent)
+        (has_horizontal_mill ?y0 ?x0 ?x1 ?x2 ?opponent)
     )
-    ; opponent has more stones that are not part of mill
-    (true (stones ?player ?n))
-    (gt ?n 3)
 )
 
 ;; Moving stones to adjacent locations
@@ -249,10 +253,15 @@
 ;; TODO
 (<= (next (stones ?player ?num))
     ;; TODO: complete the condition
-    (opponent ?player ?opponent) ; get opponent
-    (does opponent (take ?x ?y)) ; if opponent took a stone
+    (lost_stone ?player)
     (true (stones ?player ?old)) ; previous value
     (predecessor ?old ?num) ; previous value - 1
+)
+
+(<= (next (stones ?player ?num))
+    ;; TODO: complete the condition
+    (not (lost_stone ?player))
+    (true (stones ?player ?num))
 )
 
 
