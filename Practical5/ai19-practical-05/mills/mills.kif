@@ -64,12 +64,12 @@
 ; TODO (optional):
 ; Add additional facts as you wish
 
-;; whether player places a piece
+; check if player places a stone
 (<= (has_placed ?player)
     (does ?player (place ?x ?y))
 )
 
-
+; check if a player's stone has left a cell
 (<= (leaves_cell ?x ?y ?player)
     (opponent ?player ?opponent)
     (or
@@ -84,7 +84,7 @@
     (does ?opponent (take ?x ?y)) ; if opponent took a stone
 )
 
-; horizontal mill
+; check if player has a horizontal mill
 (<= (has_horizontal_mill ?y ?x0 ?x1 ?x2 ?player)
     (horizontal-line ?y ?x0 ?x1 ?x2)
     (true (cell ?x0 ?y ?player))
@@ -92,7 +92,7 @@
     (true (cell ?x2 ?y ?player))
 )
 
-; vertical mill
+; check if player has a vertical mill
 (<= (has_vertical_mill ?x ?y0 ?y1 ?y2 ?player)
     (vertical-line ?x ?y0 ?y1 ?y2)
     (true (cell ?x ?y0 ?player))
@@ -100,7 +100,7 @@
     (true (cell ?x ?y2 ?player))
 )
 
-; did player move or place a piece into new location for a horizontal mill?
+; check if player moved or placed a piece into new location for a horizontal mill
 (<= (completed_horizontal_mill ?player)
     (or
         (does ?player (move ?xi ?yi ?x ?y)) ; move into new position
@@ -110,11 +110,12 @@
     (horizontal-line ?y ?x ?x1 ?x2)
     (true (cell ?x1 ?y ?player))
     (true (cell ?x2 ?y ?player))
+    ; if player moves horizontally within this line, it isn't actually a new mill
     (not (leaves_cell ?x1 ?y ?player))
     (not (leaves_cell ?x2 ?y ?player))
 )
 
-; did player move or place a piece into new location for a vertical mill?
+; check if player moved or placed a piece into new location for a vertical mill
 (<= (completed_vertical_mill ?player)
     (or
         (does ?player (move ?xi ?yi ?x ?y)) ; move into new position
@@ -124,8 +125,20 @@
     (vertical-line ?x ?y ?y1 ?y2)
     (true (cell ?x ?y1 ?player))
     (true (cell ?x ?y2 ?player))
+    ; if player moves vertically within this line, it isn't actually a new mill
     (not (leaves_cell ?x ?y1 ?player))
     (not (leaves_cell ?x ?y2 ?player))
+)
+
+; check if player has a stone that is not part of a mill
+(<= (exists_unmilled_stone ?x ?y ?player)
+    (or
+        ; find x,y that are not part of a player's mills
+        (not (has_horizontal_mill ?y ?x ?x3 ?x4 ?player))
+        (not (has_vertical_mill ?x ?y ?y3 ?y4 ?player))
+    )
+    ; make sure that x,y belongs to player
+    (true (cell ?x ?y ?player))
 )
 
 
@@ -151,11 +164,9 @@
     ;; TODO: complete the condition
     (opponent ?player ?opponent)
     (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
-    ; opponent does not have a mill, so we can take any piece
-    (not (has_vertical_mill ?xi ?y0 ?y1 ?y2 ?opponent))
-    (not (has_horizontal_mill ?yi ?x0 ?x1 ?x2 ?opponent))
-    ; if opponent has two mills, we can take any piece
-)`
+    ; opponent's piece is not part of a mill
+    (has_unmilled_stone ?x ?y ?opponent)
+)
 
 ;; You may want to add additional rules (to encode e.g., disjunctive conditions):
 (<= (legal ?player (take ?x ?y))
@@ -163,11 +174,8 @@
     (opponent ?player ?opponent)
     ;; TODO: complete the condition
     (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
-    ; TODO - can only take opponent mill pieces if no other options
-    (or ; opponent has a mill, but x, y is part of it
-        (has_vertical_mill ?x0 ?y0 ?y1 ?y2 ?opponent)
-        (has_horizontal_mill ?y0 ?x0 ?x1 ?x2 ?opponent)
-    )
+    ; opponent's pieces are all parts of a mill
+    (not (has_unmilled_stone ?xi ?yi ?opponent))
 )
 
 ;; Moving stones to adjacent locations
