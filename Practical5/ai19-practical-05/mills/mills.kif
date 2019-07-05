@@ -118,11 +118,8 @@
 
 ; check if player has a stone that is not part of a mill
 (<= (has_unmilled_stone ?player)
-    (or
-        (not (is_in_mill ?x ?y))
-    )
-    ; make sure that x,y belongs to player
-    (true (cell ?x ?y ?player))
+    (not (is_in_mill ?x ?y)) ; x,y is not part of a mill
+    (true (cell ?x ?y ?player)) ; make sure that x,y belongs to player
 )
 
 ; check if position is in vertical mill
@@ -165,7 +162,6 @@
     (opponent ?player ?opponent)
     (true (cell ?x ?y ?opponent)) ; has to be opponent's piece
     ; opponent's piece is not part of a mill
-    (has_unmilled_stone ?opponent)
     (not (is_in_mill ?x ?y))
 )
 
